@@ -1,0 +1,22 @@
+此msgx目录下代码，为各微服务提供grpc消息通信的功能。包括服务端代码 和 客户端代码。
+当前这些微服务包括 subsm 、 cflm 、 mgmt
+
+xapp只做grpc的客户端，它通过kafka接收nric平台返回的消息
+xapp 需要使用2个客户端：subsmclient，cflmclient
+
+subsm 使用的客户端：e2tclient,dbagentclient,(kafkawriter)
+它只提供基本的grpc消息接收服务
+
+e2t 使用的客户端：subsmclient,(kafkawriter),cflmclient?
+它提供消息接收外，还提供路由表刷新服务。具体实现不在此msgx目录下，而是在pkg/nrice2t/route目录下
+
+gnodeb 和 nric平台间无grpc通道，而是通过sctp通道通信
+
+dbagent 使用的客户端：e2tclient（用于路由发布）。访问database
+它提供消息接收外，还提供路由表及其他数据库表的访问服务。具体实现不在此msgx目录下，而是在pkg/dbagent/grpcserver目录下
+
+cflm 使用的客户端：e2tclient，(kafkawriter)
+它只提供基本的grpc消息接收服务
+
+mgmt 使用的客户端（tbd）：dbagentclient,(kafkawriter)
+它只提供基本的grpc消息接收服务

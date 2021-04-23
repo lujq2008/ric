@@ -1,0 +1,12 @@
+syntax = "proto3";
+package subsm;
+
+option go_package=".;subsm";
+import "google/protobuf/timestamp.proto";
+import "msgdef.proto";
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+service cflmService {
+    rpc rpcHandleMsg(GrpcMsg) returns (GrpcReply) {};
+}

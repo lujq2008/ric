@@ -1,0 +1,121 @@
+syntax = "proto3";
+package e2t;
+
+option go_package=".;e2t";
+import "google/protobuf/timestamp.proto";
+import "msgdef.proto";
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+service e2tService {
+    rpc rpcHandleMsg(GrpcMsg) returns (GrpcReply) {};
+
+    rpc RouteTableInsert(RouteTableInsertRequest) returns (RouteTableInsertResponse);
+    rpc RouteTableRead(RouteTableReadRequest) returns (RouteTableReadResponse);
+    rpc RouteTableUpdate(RouteTableUpdateRequest) returns (RouteTableUpdateResponse);
+    rpc RouteTableDelete(RouteTableDeleteRequest) returns (RouteTableDeleteResponse);
+    rpc RouteTableReadAll(RouteTableReadAllRequest) returns (RouteTableReadAllResponse);
+
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+message RouteTable {
+    // Unique integer identifier of the route table
+    int64 SubIdXapp     = 1;
+
+    // output
+    string Topic        = 2;
+    int64  SubIdRan     = 3;
+
+    // Date and time to remind the route table
+    google.protobuf.Timestamp reminder = 4;
+}
+
+// Request data to create new route table
+message RouteTableInsertRequest{
+    // API versioning: it is my best practice to specify version explicitly
+    string api = 1;
+
+    // Task entity to add
+    RouteTable routeTable = 2;
+}
+
+// Contains data of created route table
+message RouteTableInsertResponse{
+    // API versioning: it is my best practice to specify version explicitly
+    string api = 1;
+
+    // SubId of created task
+    int64 SubIdXapp = 2;
+}
+
+// Request data to read route table
+message RouteTableReadRequest{
+    // API versioning: it is my best practice to specify version explicitly
+    string api = 1;
+
+    // Unique integer identifier of the route table
+    int64 SubIdXapp = 2;
+}
+
+// Contains route table data specified in by ID request
+message RouteTableReadResponse{
+    // API versioning: it is my best practice to specify version explicitly
+    string api = 1;
+
+    // Task entity read by SubIdXapp
+    RouteTable routeTable = 2;
+}
+
+// Request data to update route table
+message RouteTableUpdateRequest{
+    // API versioning: it is my best practice to specify version explicitly
+    string api = 1;
+
+    // Task entity to update
+    RouteTable routeTable = 2;
+}
+
+// Contains status of update operation
+message RouteTableUpdateResponse{
+    // API versioning: it is my best practice to specify version explicitly
+    string api = 1;
+
+    // Contains number of entities have beed updated
+    // Equals 1 in case of succesfull update
+    int64 updated = 2;
+}
+
+// Request data to delete route table
+message RouteTableDeleteRequest{
+    // API versioning: it is my best practice to specify version explicitly
+    string api = 1;
+
+    // Unique integer identifier of the route table to delete
+    int64 SubIdXapp = 2;
+}
+
+// Contains status of delete operation
+message RouteTableDeleteResponse{
+    // API versioning: it is my best practice to specify version explicitly
+    string api = 1;
+
+    // Contains number of entities have beed deleted
+    // Equals 1 in case of succesfull delete
+    int64 deleted = 2;
+}
+
+// Request data to read all route table
+message RouteTableReadAllRequest{
+    // API versioning: it is my best practice to specify version explicitly
+    string api = 1;
+}
+
+// Contains list of all route tables
+message RouteTableReadAllResponse{
+    // API versioning: it is my best practice to specify version explicitly
+    string api = 1;
+
+    // List of all route tables
+    repeated RouteTable routeTables = 2;
+}

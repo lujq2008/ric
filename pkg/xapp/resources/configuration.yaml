@@ -1,0 +1,11 @@
+logging:
+  logLevel: 3
+nricmgmthost: "10.233.69.101"
+
+http:
+  port: 1000
+
+globalRicId:
+  ricId: "AAAAA"
+  mcc: "310"
+  mnc: "411"

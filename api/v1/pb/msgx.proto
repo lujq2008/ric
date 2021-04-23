@@ -1,0 +1,83 @@
+syntax = "proto3";
+package msgx;
+
+//d:\Go\test\src\nRIC\api\v1\pb>protoc.exe msgx.proto  --go_out=plugins=grpc:../../../internal/msgx/.
+
+option go_package=".;msgx";
+//e2ap pdu
+message GrpcMsg {
+    int32 Mtype         = 1;
+    bytes Payload       = 2;
+    int32 PayloadLen    = 3;
+    int32 Callid        = 4;
+    int32 Timeout       = 5;
+    int32 status        = 6;
+    string Meid         = 7;
+    string topic        = 8;
+    int32  SubId        = 9;
+}
+
+message GrpcReply {
+    int32  code         = 1;
+    string err          = 2;
+}
+
+
+service MsgService {
+    rpc rpcHandleMsg(GrpcMsg) returns (GrpcReply) {};
+}
+
+//2021-3-30
+message XAPPRequestID  {
+	uint32  XappID 			= 1;
+	uint32  XappInstanceID  = 2;
+}
+
+message RICMsgHeader  {
+	int32           MsgType		    = 1;
+	int32           MsgVer   	    = 2;
+	XAPPRequestID   XappRequestID   = 3;
+}
+message XappMsgHeader  {
+	int32           MsgType		    = 1;
+	float           MsgVer   		= 2;
+	string          Token     		= 3;
+	XAPPRequestID   XappRequestID 	= 4;
+}
+
+message XappRegMsg  {
+	XappMsgHeader       Header          = 1;
+	float               XappVer         = 2;
+	string              XappName        = 3;
+	string              XappFunctions  	= 4; //Functions ID 集合
+	string              XappIpaddr      = 5;
+	string              XappPort        = 6;
+}
+
+
+message XappRegResp  {
+	RICMsgHeader            Header      = 1;
+	map<string, RICService> RicServices = 2;
+	string                  Topic       = 3;
+	string                  KafkaURL    = 4;
+	string                  Cause       = 5;
+}
+
+message RICService  {
+	string          Name 	    = 1;
+	int32           ServiceVer 	= 2;
+	string          IpAddr 		= 3;
+	string          Port   		= 4;
+}
+
+message SMOInitMsg  {
+	RICMsgHeader            Header      = 1;
+	map<string, string>     InitConfig  = 2;
+}
+
+
+message SMOEnableMsg  {
+	RICMsgHeader            Header      = 1;  //MsgType is Enable  or Disable
+}
+
+

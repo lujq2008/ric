@@ -1,0 +1,112 @@
+syntax = "proto3";
+//d:\Go\test\src\nRIC\api\v1\pb\db>protoc.exe ../msgdef.proto ./dbsvc.proto --go_out=plugins=grpc:. -I../. -I./.
+package db;
+option go_package=".;db";
+import "google/protobuf/timestamp.proto";
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//管理对象实例表
+message MOITable {
+    // Unique integer identifier of the moi table
+    uint32 XappID           = 1; //alloc by mgmt
+    float XappVer           = 2;
+    string  XappName        = 3;
+    string  Functions       = 4;  //1,2,5...
+    string  RunningStatus   = 5; //active, inactive
+    string  IsReady         = 6; //true ,false
+    string  Topic           = 7; //kafka topic for xapp,alloc by mgmt
+
+    // Date and time to remind the moi table
+    google.protobuf.Timestamp reminder = 8;
+}
+
+
+// Request data to create new moi table
+message MOITableInsertRequest{
+    // API versioning: it is my best practice to specify version explicitly
+    string api = 1;
+
+    // Task entity to add
+    MOITable moiTable = 2;
+}
+
+// Contains data of created moi table
+message MOITableInsertResponse{
+    // API versioning: it is my best practice to specify version explicitly
+    string api = 1;
+
+    // SubId of created task
+    uint32 XappID = 2;
+}
+
+// Request data to read moi table
+message MOITableReadRequest{
+    // API versioning: it is my best practice to specify version explicitly
+    string api = 1;
+
+    // Unique integer identifier of the moi table
+    uint32 XappID = 2;
+}
+
+// Contains moi table data specified in by ID request
+message MOITableReadResponse{
+    // API versioning: it is my best practice to specify version explicitly
+    string api = 1;
+
+    // Task entity read by SubIdXapp
+    MOITable moiTable = 2;
+}
+
+// Request data to update moi table
+message MOITableUpdateRequest{
+    // API versioning: it is my best practice to specify version explicitly
+    string api = 1;
+
+    // Task entity to update
+    MOITable moiTable = 2;
+}
+
+// Contains status of update operation
+message MOITableUpdateResponse{
+    // API versioning: it is my best practice to specify version explicitly
+    string api = 1;
+
+    // Contains number of entities have beed updated
+    // Equals 1 in case of succesfull update
+    int32 updated = 2;
+}
+
+// Request data to delete moi table
+message MOITableDeleteRequest{
+    // API versioning: it is my best practice to specify version explicitly
+    string api = 1;
+
+    // Unique integer identifier of the moi table to delete
+    uint32 XappID = 2;
+}
+
+// Contains status of delete operation
+message MOITableDeleteResponse{
+    // API versioning: it is my best practice to specify version explicitly
+    string api = 1;
+
+    // Contains number of entities have beed deleted
+    // Equals 1 in case of succesfull delete
+    int32 deleted = 2;
+}
+
+// Request data to read all moi table
+message MOITableReadAllRequest{
+    // API versioning: it is my best practice to specify version explicitly
+    string api = 1;
+}
+
+// Contains list of all moi tables
+message MOITableReadAllResponse{
+    // API versioning: it is my best practice to specify version explicitly
+    string api = 1;
+
+    // List of all moi tables
+    repeated MOITable moiTables = 2;
+}
+
